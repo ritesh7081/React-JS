@@ -50,16 +50,16 @@ export class Service{
         }
     }
 
-    async deletePost(slug) {
+    async deletePost(slug){
         try {
-            return await this.databases.deleteDocument(
+            await this.databases.deleteDocument(
                 conf.appwriteDatabaseId,
                 conf.appwriteCollectionId,
                 slug
             )
             return true
         } catch (error) {
-            console.log("Appwrite service :: deletePost :: error", error);
+            console.log("Appwrite serive :: deletePost :: error", error);
             return false
         }
     }
@@ -71,7 +71,6 @@ export class Service{
                 conf.appwriteCollectionId,
                 slug
             )
-            return true
         } catch (error) {
             console.log("Appwrite service :: getPost :: error", error);
             return false
@@ -85,7 +84,6 @@ export class Service{
                 conf.appwriteCollectionId,
                 queries
             )
-            return true
         } catch (error) {
             console.log("Appwrite service :: getPosts :: error", error);
             return false
@@ -100,7 +98,6 @@ export class Service{
                 ID.unique(),
                 file
             )
-            return true
         } catch (error) {
             console.log("Appwrite service :: uploadFile :: error", error);
             return false
