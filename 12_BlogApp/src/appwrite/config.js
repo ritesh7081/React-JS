@@ -1,5 +1,5 @@
 import conf from "../conf/conf.js";
-import { Client, ID, Databases, Storage, Query } from "appwrite";
+import { Client, ID, Databases, Storage, Query, Permission, Role } from "appwrite";
 
 export class Service{
     client = new Client();
@@ -91,18 +91,33 @@ export class Service{
     }
 
     // file upload service
+    // async uploadFile(file) {
+    //     try {
+    //         return await this.bucket.createFile(
+    //             conf.appwriteBucketId,
+    //             ID.unique(),
+    //             file
+    //         )
+    //     } catch (error) {
+    //         console.log("Appwrite service :: uploadFile :: error", error);
+    //         return false
+    //     }
+    // }
     async uploadFile(file) {
-        try {
-            return await this.bucket.createFile(
-                conf.appwriteBucketId,
-                ID.unique(),
-                file
-            )
-        } catch (error) {
-            console.log("Appwrite service :: uploadFile :: error", error);
-            return false
-        }
+    try {
+        return await this.bucket.createFile(
+            conf.appwriteBucketId,
+            ID.unique(),
+            file,
+            [
+                Permission.read(Role.any())  // 👈 make file public
+            ]
+        )
+    } catch (error) {
+        console.log("Appwrite service :: uploadFile :: error", error);
+        return false
     }
+}
 
     async deleteFile(fileId) {
         try {
@@ -118,7 +133,7 @@ export class Service{
     }
     
     getFilePreview(fileId) {
-        return this.bucket.getFilePreview(
+        return this.bucket.getFileView(
             conf.appwriteBucketId,
             fileId
         )
